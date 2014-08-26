@@ -17,6 +17,7 @@ h1 {
 
 #game {
     background: black;
-    outline: 3px dotted green;
-    margin-bottom: 20px;
+    /*outline: 3px dotted green;*/
+    outline: 1px solid grey;
+    margin: 20px auto;
 }
