@@ -1,0 +1,22 @@
+body {
+    background-color: black;
+    margin: 0px;
+    padding: 0px;
+}
+
+h1 {
+    color: red;
+    text-align: center;
+}
+
+#app-wrapper {
+    width: 300px;
+    margin: 0 auto;
+    padding: 0px;
+}
+
+#game {
+    background: black;
+    outline: 3px dotted green;
+    margin-bottom: 20px;
+}
