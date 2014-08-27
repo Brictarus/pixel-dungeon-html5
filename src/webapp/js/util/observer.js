@@ -23,6 +23,10 @@ define(['util/class'], function(Class) {
           }
         }
       }
+    },
+
+    destroy: function() {
+      this._eventToListeners = null;
     }
   });
 

@@ -1,5 +1,5 @@
 define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, AssetLoader, Button) {
-  var TitleScene = Observer.extend({
+  var AboutScene = Observer.extend({
 		init: function(options) {
       this.game = options.game;
       this.zoom = options.zoom;
@@ -15,13 +15,10 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
         this.arcs2VertOffset = 0;
       }
       this.started = false;
-
       this.aLoader = new AssetLoader(this.game.config.assetConfig);
-      this.aLoader.addSprite("banners", "png");
-      this.aLoader.addSprite("dashboard", "png");
       this.aLoader.addSprite("arcs1", "png");
       this.aLoader.addSprite("arcs2", "png");
-
+      this.aLoader.addSprite("icons", "png");
       this.aLoader.load(this.onResourcesLoaded.bind(this));
 
       this.children = [];
@@ -32,72 +29,25 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
           canvasH = this.height;
 
       // boutons
-      var dashboardImg = this.aLoader.spriteData('dashboard').image;
-      this.playButton = new Button({
-        text: "Play",
+      var iconsImg = this.aLoader.spriteData('icons').image;
+      this.backButton = new Button({
+        text: "Retour",
+        hideText: true,
         img: {
-          data: dashboardImg,
-          sx: 0, sy: 0, w: 32, h: 32
+          data: iconsImg,
+          sx: 1, sy: 46, w: 11, h: 11
         },
         position: {
-          x: 60,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 30
+          x: canvasW - (10 * this.zoom) - 10,
+          y: 10
         },
         size: {
-          w: 32 * this.zoom,
-          h: 32 * this.zoom
-        }
-      });
-
-      this.rankingButton = new Button({
-        text: "Rankings",
-        img: {
-          data: dashboardImg,
-          sx: 64, sy: 0, w: 32, h: 32
-        },
-        position: {
-          x: 170,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 30
-        },
-        size: {
-          w: 32 * this.zoom,
-          h: 32 * this.zoom
-        }
-      });
-
-      this.badgesButton = new Button({
-        text: "Badges",
-        img: {
-          data: dashboardImg,
-          sx: 96, sy: 0, w: 32, h: 32
-        },
-        position: {
-          x: 60,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 150
-        },
-        size: {
-          w: 32 * this.zoom,
-          h: 32 * this.zoom
-        }
-      });
-
-      this.aboutButton = new Button({
-        text: "About",
-        img: {
-          data: dashboardImg,
-          sx: 32, sy: 0, w: 32, h: 32
-        },
-        position: {
-          x: 170,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 150
-        },
-        size: {
-          w: 32 * this.zoom,
-          h: 32 * this.zoom
+          w: (10 * this.zoom),
+          h: (10 * this.zoom)
         },
         pressedCallback: (function() {
           this.game.changeScene({
-            sceneName: "ABOUT",
+            sceneName: "TITLE",
             arcsData: {
               arcs1VertOffset: this.arcs1VertOffset,
               arcs2VertOffset: this.arcs2VertOffset
@@ -105,11 +55,7 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
           });
         }).bind(this)
       });
-
-      this.children.push(this.playButton);
-      this.children.push(this.rankingButton);
-      this.children.push(this.badgesButton);
-      this.children.push(this.aboutButton);
+      this.children.push(this.backButton);
 
       // défilement du background (arcs1 et arcs2)
       var arcs1Img = this.aLoader.spriteData('arcs1').image;
@@ -199,8 +145,7 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
 
     draw: function() {
       this.context.save();
-      var titleImg = this.aLoader.spriteData('banners').image;
-      var dashboardImg = this.aLoader.spriteData('dashboard').image;
+
       var arcs1Img = this.aLoader.spriteData('arcs1').image;
       var arcs2Img = this.aLoader.spriteData('arcs2').image;
       var canvasW = this.width,
@@ -225,23 +170,29 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
         }
       }
 
-      // draw title
-      this.context.drawImage(titleImg, 0, 0, titleImg.width, 68,
-          (canvasW / 2) - (titleImg.width / 2 * zoom), (canvasH / 3) - (titleImg.height / 2), titleImg.width * 2, 68 * zoom);
+      var xOffsetText = 20;
+      this.context.font = "12px Verdana";
+      this.context.fillStyle = "white";
+      //console.log("measureText", this.context.measureText("Adapted in HTML5: Brictarus"));
+      this.context.fillText("Adapted in HTML5: Brictarus", xOffsetText, 60);
+      this.context.fillText("From original Android game Pixel Dungeon", xOffsetText, 80);
+
+      this.context.fillText("The code is on GitHub:", xOffsetText, 120);
+      this.context.fillStyle = "blue";
+      this.context.fillText("https://github.com/Brictarus/pixel-dungeon", xOffsetText, 140 );
+
+
 
       // draw buttons
       this.children.forEach((function(element) {
         element.draw(this.context);
       }).bind(this));
 
-      this.context.textAlign = "right";
-      this.context.fillStyle = "white";
-      this.context.font = "10px Verdana";
-      this.context.fillText("v. " +this.game.config.version, canvasW, canvasH - 2);
+
       this.context.restore();
     }
 
 	});
 	
-	return TitleScene;
+	return AboutScene;
 })

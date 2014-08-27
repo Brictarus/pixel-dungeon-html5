@@ -1,13 +1,36 @@
-define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'],
-    function(Observer, DomHelper, AssetLoader, TitleScene) {
+define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene', 'scenes/about-scene', 'util/logger'],
+    function(Observer, DomHelper, AssetLoader, TitleScene, AboutScene, Logger) {
 
   var Game = Observer.extend({
+    logger : Logger.getLogger('Loader', Logger.Levels.INFO),
+
     init: function(options) {
       this.config = options.config;
       this.$root = options.$root;
+      this.currentScene = null;
       this.createCanvases();
-      this.currScene = "HOME";
-      this.draw();
+      this.attachMouseEvents();
+      this.changeScene({ sceneName: "TITLE"});
+    },
+
+    attachMouseEvents: function () {
+      this.$root.addEventListener("mousedown", (function(mouseEvent) {
+        var x = mouseEvent.pageX - this.$root.offsetLeft,
+            y = mouseEvent.pageY - this.$root.offsetTop;
+        //this.logger.debug("x = ", x, "y = ", y, mouseEvent);
+        if (this.currentScene != null) {
+          this.currentScene.onMouseDown(x, y, mouseEvent);
+        }
+      }).bind(this));
+
+      window.addEventListener("mouseup", (function(mouseEvent) {
+        var x = mouseEvent.pageX - this.$root.offsetLeft,
+            y = mouseEvent.pageY - this.$root.offsetTop;
+        this.logger.debug("x = ", x, "y = ", y, mouseEvent);
+        if (this.currentScene != null) {
+          this.currentScene.onMouseUp(x, y, mouseEvent);
+        }
+      }).bind(this));
     },
 
     createCanvases: function() {
@@ -37,22 +60,38 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.context = $canvas.getContext("2d");
     },
 
-    draw: function() {
-      this.context.save();
-      this.context.strokeStyle = "blue";
+    changeScene: function (data) {
+      if (this.currentScene) {
+        this.currentScene.stop();
+      }
+      this.state = data.sceneName;
 
       var canvasW = this.$canvas.width,
           canvasH = this.$canvas.height;
       var zoom = 2;
-      if (this.currScene == "HOME") {
-        new TitleScene({
-          game: this,
-          zoom: zoom,
-          height: canvasH,
-          width: canvasW,
-          context: this.context
-        });
+      var sceneOptions = {
+        game: this,
+        zoom: zoom,
+        height: canvasH,
+        width: canvasW,
+        context: this.context
+      };
+      if (data && data.arcsData) {
+        sceneOptions.arcsData = data.arcsData;
       }
+      switch (this.state) {
+        case "TITLE":
+          this.currentScene = new TitleScene(sceneOptions);
+          break;
+        case "ABOUT":
+          this.currentScene = new AboutScene(sceneOptions)
+          break;
+        default:
+          this.currentScene = null;
+      }
+      /*if (this.currentScene) {
+        this.currentScene.on("change-scene", this.changeScene.bind(this));
+      }*/
     }
   });
 
