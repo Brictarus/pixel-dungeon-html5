@@ -1,4 +1,4 @@
-define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, AssetLoader, Button) {
+define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(Observer, AssetLoader, Button, Arcs) {
   var TitleScene = Observer.extend({
 		init: function(options) {
       this.game = options.game;
@@ -28,8 +28,7 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
 		},
 
     initScene: function() {
-      var canvasW = this.width,
-          canvasH = this.height;
+      var canvasH = this.height;
 
       // boutons
       var dashboardImg = this.aLoader.spriteData('dashboard').image;
@@ -112,18 +111,17 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
       this.children.push(this.aboutButton);
 
       // défilement du background (arcs1 et arcs2)
-      var arcs1Img = this.aLoader.spriteData('arcs1').image;
-      var arcs2Img = this.aLoader.spriteData('arcs2').image;
-
-      this.arcs1ImgWidthZoomed = arcs1Img.width * this.zoom;
-      this.arcs1ImgHeightZoomed = arcs1Img.height * this.zoom;
-      this.arcs2ImgWidthZoomed = arcs2Img.width * this.zoom;
-      this.arcs2ImgHeightZoomed = arcs2Img.height * this.zoom;
-
-      this.arcs1HorizOffset = this.arcs1ImgHeightZoomed / 3;
-
-      this.arcs1VertSpeed = 0.5;
-      this.arcs2VertSpeed = 1;
+      this.arcs = new Arcs({
+        arcs1Asset: this.aLoader.spriteData('arcs1'),
+        arcs2Asset: this.aLoader.spriteData('arcs2'),
+        arcs1VertOffset: this.arcs1VertOffset,
+        arcs2VertOffset: this.arcs2VertOffset,
+        size: {
+          w: this.width,
+          h: this.height
+        },
+        zoom: this.zoom
+      });
     },
 
     onResourcesLoaded: function() {
@@ -152,14 +150,11 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
 
     update: function() {
       // background scrolling
-      this.arcs1VertOffset -= this.arcs1VertSpeed;
-      if (-this.arcs1VertOffset >= this.arcs1ImgHeightZoomed) {
-        this.arcs1VertOffset = 0;
-      }
-      this.arcs2VertOffset -= this.arcs2VertSpeed;
-      if (-this.arcs2VertOffset >= this.arcs2ImgHeightZoomed) {
-        this.arcs2VertOffset = 0;
-      }
+      this.arcs.update();
+
+      this.children.forEach((function(element) {
+        element.update && element.update();
+      }).bind(this));
     },
 
     onMouseDown: function(x, y, mouseEvent) {
@@ -198,32 +193,14 @@ define(['util/observer', 'asset-loader', 'gui/button'], function(Observer, Asset
     },
 
     draw: function() {
-      this.context.save();
-      var titleImg = this.aLoader.spriteData('banners').image;
-      var dashboardImg = this.aLoader.spriteData('dashboard').image;
-      var arcs1Img = this.aLoader.spriteData('arcs1').image;
-      var arcs2Img = this.aLoader.spriteData('arcs2').image;
       var canvasW = this.width,
           canvasH = this.height,
           zoom = this.zoom;
 
-      // draw arcs
-      var arcs1WidthCount = Math.ceil(canvasW / (arcs1Img.width * zoom));
-      var arcs1HeightCount = Math.ceil(canvasH / (arcs1Img.height * zoom));
-      for (var iArcs1 = 0; iArcs1 <= arcs1WidthCount; iArcs1++) {
-        for (var jArcs1 = 0; jArcs1 <= arcs1HeightCount; jArcs1++) {
-          this.context.drawImage(arcs1Img, 0, 0, arcs1Img.width, arcs1Img.height,
-              (iArcs1 * this.arcs1ImgWidthZoomed) - this.arcs1HorizOffset, (jArcs1 * arcs1Img.height * zoom) + this.arcs1VertOffset, this.arcs1ImgWidthZoomed, this.arcs1ImgHeightZoomed);
-        }
-      }
-      var arcs2WidthCount = Math.ceil(canvasW / (arcs2Img.width * zoom));
-      var arcs2HeightCount = Math.ceil(canvasH / (arcs2Img.height * zoom));
-      for (var iArcs2 = 0; iArcs2 < arcs2WidthCount; iArcs2++) {
-        for (var jArcs2 = 0; jArcs2 <= arcs2HeightCount; jArcs2++) {
-          this.context.drawImage(arcs2Img, 0, 0, arcs2Img.width, arcs2Img.height,
-              (iArcs2 * this.arcs2ImgWidthZoomed), (jArcs2 * this.arcs2ImgHeightZoomed) + this.arcs2VertOffset, this.arcs2ImgWidthZoomed, this.arcs2ImgHeightZoomed);
-        }
-      }
+      this.context.save();
+      var titleImg = this.aLoader.spriteData('banners').image;
+
+      this.arcs.draw(this.context);
 
       // draw title
       this.context.drawImage(titleImg, 0, 0, titleImg.width, 68,
