@@ -21,7 +21,7 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
             this.aLoader.addSprite("avatars", "png");
             this.aLoader.addSprite("arcs1", "png");
             this.aLoader.addSprite("arcs2", "png");
-
+            this.aLoader.addSprite("icons", "png");
             this.aLoader.load(this.onResourcesLoaded.bind(this));
 
             this.children = [];
@@ -112,10 +112,39 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                 pressedCallback: function(){ this.scene.selectHero(this)}
             });
 
+            var iconsImg = this.aLoader.spriteData('icons').image;
+            this.backButton = new Button({
+              text: "Retour",
+              hideText: true,
+              img: {
+                data: iconsImg,
+                sx: 98, sy: 0, w: 16, h: 14
+              },
+              position: {
+                x: canvasW - (10 * this.zoom) - 10,
+                y: 10
+              },
+              size: {
+                w: (10 * this.zoom),
+                h: (10 * this.zoom)
+              },
+              pressedCallback: (function() {
+                this.game.changeScene({
+                  sceneName: "TITLE",
+                  arcsData: {
+                    arcs1VertOffset: this.arcs.arcs1VertOffset,
+                    arcs2VertOffset: this.arcs.arcs2VertOffset
+                  }
+                });
+              }).bind(this)
+            });
+
             this.children.push(this.warriorButton);
             this.children.push(this.mageButton);
             this.children.push(this.rogueButton);
             this.children.push(this.huntressButton);
+
+            this.children.push(this.backButton);
 
             // défilement du background (arcs1 et arcs2)
             this.arcs = new Arcs({
