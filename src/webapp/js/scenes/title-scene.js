@@ -96,7 +96,7 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
           h: 32 * this.zoom
         },
         pressedCallback: (function() {
-          this.changeScene("RANKINGS", {
+          this.changeScene("BADGES", {
             arcsData: {
               arcs1VertOffset: this.arcs.arcs1VertOffset,
               arcs2VertOffset: this.arcs.arcs2VertOffset

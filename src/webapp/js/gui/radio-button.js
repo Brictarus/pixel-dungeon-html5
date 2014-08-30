@@ -13,7 +13,7 @@ define(['gui/button', 'util/logger'], function (Button, Logger) {
         init: function (options) {
             this._super(options);
             this.selectedAlpha = options.selectedAlpha || 1;
-            this.unselectedAlpha = options.unselectedAlpha || 0.2;
+            this.unselectedAlpha = options.unselectedAlpha || 0.4;
             this.selected = false;
             this.scene = options.scene;
         },
