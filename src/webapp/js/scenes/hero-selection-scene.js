@@ -43,7 +43,7 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                 },
                 position: {
                     x: xOffset,
-                    y: (canvasH / 3) + (avatarsImg.height / 2) + 30
+                    y: (canvasH / 3) + (avatarsImg.height / 2) - 50
                 },
                 size: {
                     w: 24 * this.zoom,
@@ -64,7 +64,7 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                 },
                 position: {
                     x: xOffset + (canvasW / 2),
-                    y: (canvasH / 3) + (avatarsImg.height / 2) + 30
+                    y: (canvasH / 3) + (avatarsImg.height / 2) - 50
                 },
                 size: {
                     w: 24 * this.zoom,
@@ -83,7 +83,7 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                 },
                 position: {
                     x: xOffset,
-                    y: (canvasH / 3) + (avatarsImg.height / 2) + 150
+                    y: (canvasH / 3) + (avatarsImg.height / 2) + 70
                 },
                 size: {
                     w: 24 * this.zoom,
@@ -102,7 +102,7 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                 },
                 position: {
                     x: xOffset + (canvasW / 2),
-                    y: (canvasH / 3) + (avatarsImg.height / 2) + 150
+                    y: (canvasH / 3) + (avatarsImg.height / 2) + 70
                 },
                 size: {
                     w: 24 * this.zoom,
@@ -227,8 +227,8 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
 
             // draw title
             var titleImg = this.aLoader.spriteData('banners').image;
-            this.context.drawImage(titleImg, 0, 0, titleImg.width, 68,
-                    (canvasW / 2) - (titleImg.width / 2 * zoom), (canvasH / 3) - (titleImg.height / 2), titleImg.width * 2, 68 * zoom);
+            this.context.drawImage(titleImg, 0, 136, titleImg.width, 28,
+                    (canvasW / 2) - (titleImg.width / 2 * zoom), (canvasH / 3) - (titleImg.height / 2), titleImg.width * 2, 28 * zoom);
 
             // draw buttons
             this.children.forEach((function (element) {
