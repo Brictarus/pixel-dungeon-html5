@@ -18,6 +18,10 @@ define(['gui/button', 'util/logger'], function (Button, Logger) {
             this.scene = options.scene;
         },
 
+        select: function(){
+            this.selected = true;
+        },
+
         unselect: function(){
             this.selected = false;
         },
@@ -54,7 +58,6 @@ define(['gui/button', 'util/logger'], function (Button, Logger) {
 
         press: function () {
             this.logger.info("Button ", (this.name ? this.name : this.text), " pressed");
-            this.selected = true;
             this.pressedCallback && this.pressedCallback();
         },
 

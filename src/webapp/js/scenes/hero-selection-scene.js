@@ -138,11 +138,32 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                 });
               }).bind(this)
             });
+            this.challengeButton = new Button({
+              alpha:0.2,
+              hideText: true,
+              img: {
+                data: iconsImg,
+                sx: 79, sy: 15, w: 22, h: 24
+              },
+              position: {
+                x: canvasW / 2 - 12,
+                y: (canvasH / 3) + (avatarsImg.height / 2) + 70 - 24
+              },
+              size: {
+                w: (18 * this.zoom),
+                h: (18 * this.zoom)
+              },
+              pressedCallback: (function() {
+                   console.info('Challenges not implemented yet');
+              }).bind(this)
+            });
 
             this.children.push(this.warriorButton);
             this.children.push(this.mageButton);
             this.children.push(this.rogueButton);
             this.children.push(this.huntressButton);
+
+            this.children.push(this.challengeButton);
 
             this.children.push(this.backButton);
 
@@ -186,9 +207,15 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
         },
 
         selectHero: function(heroButton){
+
             if(this.selectedHero){
+                if(this.selectedHero == heroButton){
+                  console.info('show info on hero');
+                  return;
+                }
                 this.selectedHero.unselect();
             }
+            heroButton.select();
             this.selectedHero = heroButton;
         },
 
