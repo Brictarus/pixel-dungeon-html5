@@ -1,11 +1,11 @@
-define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(Observer, AssetLoader, Button, Arcs) {
-  var TitleScene = Observer.extend({
-		init: function(options) {
-      this.game = options.game;
-      this.zoom = options.zoom;
-      this.height = options.height;
-      this.width = options.width;
-      this.context = options.context;
+define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scenes/arcs'],
+    function(BaseScene, Logger, AssetLoader, Button, Arcs) {
+  var TitleScene = BaseScene.extend({
+
+    logger : Logger.getLogger('scenes.TitleScene', Logger.Levels.INFO),
+
+    init: function(options) {
+      this._super(options);
 
       if (options.arcsData) {
         this.arcs1VertOffset = options.arcsData.arcs1VertOffset;
@@ -14,18 +14,19 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
         this.arcs1VertOffset = 0;
         this.arcs2VertOffset = 0;
       }
-      this.started = false;
 
       this.aLoader = new AssetLoader(this.game.config.assetConfig);
       this.aLoader.addSprite("banners", "png");
       this.aLoader.addSprite("dashboard", "png");
       this.aLoader.addSprite("arcs1", "png");
       this.aLoader.addSprite("arcs2", "png");
-
       this.aLoader.load(this.onResourcesLoaded.bind(this));
-
-      this.children = [];
 		},
+
+    onResourcesLoaded: function() {
+      this.initScene();
+      this.start();
+    },
 
     initScene: function() {
       var canvasH = this.height;
@@ -119,82 +120,11 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
       });
     },
 
-    onResourcesLoaded: function() {
-      this.initScene();
-
-      this.start();
-    },
-
-    step: function() {
-      this.context.clearRect(0, 0, this.width, this.height);
-      this.update();
-      this.draw();
-      if (this.started) {
-        requestAnimationFrame(this.step.bind(this), null);
-      }
-    },
-
-    changeScene: function(sceneName) {
-      this.game.changeScene({
-        sceneName: sceneName,
-        arcsData: {
-          arcs1VertOffset: this.arcs.arcs1VertOffset,
-          arcs2VertOffset: this.arcs.arcs2VertOffset
-        }
-      });
-    },
-
-    start: function() {
-      this.started = true;
-      this.step();
-    },
-
-    stop: function() {
-      this.started = false;
-    },
-
     update: function() {
+      this._super();
+
       // background scrolling
       this.arcs.update();
-
-      this.children.forEach((function(element) {
-        element.update && element.update();
-      }).bind(this));
-    },
-
-    onMouseDown: function(x, y, mouseEvent) {
-      var hit = this.hitTest(x, y);
-      if (hit && hit.onMouseDown) {
-        this.mouseDownEvent = mouseEvent;
-        mouseEvent.hit = hit;
-        hit.onMouseDown(x, y, mouseEvent);
-      }
-    },
-
-    onMouseUp: function(x, y, mouseEvent) {
-      var hit = this.hitTest(x, y);
-      this.children.forEach((function(el) {
-        if (el.onMouseUp) {
-          el.onMouseUp(x, y, mouseEvent);
-        }
-      }).bind(this));
-      if (hit) {
-        // check if mouse down target equals the one of mouse up
-        if (this.mouseDownEvent && this.mouseDownEvent.hit == hit && hit.press) {
-          hit.press();
-        }
-      }
-      this.mouseDownEvent = null;
-    },
-
-    hitTest: function(x, y) {
-      for (var i = this.children.length - 1; i >=  0; i --) {
-        if (this.children[i].hitTest) {
-          var res = this.children[i].hitTest(x, y);
-          if (res === true) return this.children[i];
-        }
-      }
-      return null;
     },
 
     draw: function() {
@@ -202,7 +132,6 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
           canvasH = this.height,
           zoom = this.zoom;
 
-      this.context.save();
       var titleImg = this.aLoader.spriteData('banners').image;
 
       this.arcs.draw(this.context);
@@ -220,9 +149,7 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
       this.context.fillStyle = "white";
       this.context.font = "10px Verdana";
       this.context.fillText("v. " +this.game.config.version, canvasW, canvasH - 2);
-      this.context.restore();
     }
-
 	});
 	
 	return TitleScene;
