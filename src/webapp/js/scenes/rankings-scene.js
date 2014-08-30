@@ -57,24 +57,9 @@ define(['util/logger', 'util/observer', 'asset-loader', 'gui/button', 'gui/hyper
           });
         }).bind(this)
       });
-      var gitLinkUrl = "https://github.com/Brictarus/pixel-dungeon";
-      this.gitLink = new Hyperlink({
-        text: gitLinkUrl,
-        url: gitLinkUrl,
-        position: {
-          x: 20,
-          y: 140
-        },
-        size: {
-          w: (10 * this.zoom),
-          h: (10 * this.zoom)
-        },
-        pressedCallback: (function() {
-          this.logger.info('git link pressed');
-        }).bind(this)
-      });
+
+
       this.children.push(this.backButton);
-      this.children.push(this.gitLink);
 
       // défilement du background (arcs1 et arcs2)
       this.arcs = new Arcs({
@@ -167,9 +152,7 @@ define(['util/logger', 'util/observer', 'asset-loader', 'gui/button', 'gui/hyper
       this.context.textBaseline = "top";
       this.context.font = "12px Verdana";
       this.context.fillStyle = "white";
-      this.context.fillText("Adapted in HTML5: Brictarus", xOffsetText, 60);
-      this.context.fillText("From original Android game Pixel Dungeon", xOffsetText, 80);
-      this.context.fillText("The code is on GitHub:", xOffsetText, 120);
+      this.context.fillText("TODO", xOffsetText, 60);
 
       // draw buttons
       this.children.forEach((function(element) {

@@ -45,7 +45,8 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
         size: {
           w: 32 * this.zoom,
           h: 32 * this.zoom
-        }
+        },
+        pressedCallback: (this.changeScene).bind(this, "RANKINGS")
       });
 
       this.rankingButton = new Button({
@@ -61,7 +62,8 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
         size: {
           w: 32 * this.zoom,
           h: 32 * this.zoom
-        }
+        },
+        pressedCallback: (this.changeScene).bind(this, "RANKINGS")
       });
 
       this.badgesButton = new Button({
@@ -77,7 +79,8 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
         size: {
           w: 32 * this.zoom,
           h: 32 * this.zoom
-        }
+        },
+        pressedCallback: (this.changeScene).bind(this, "RANKINGS")
       });
 
       this.aboutButton = new Button({
@@ -94,15 +97,7 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
           w: 32 * this.zoom,
           h: 32 * this.zoom
         },
-        pressedCallback: (function() {
-          this.game.changeScene({
-            sceneName: "ABOUT",
-            arcsData: {
-              arcs1VertOffset: this.arcs1VertOffset,
-              arcs2VertOffset: this.arcs2VertOffset
-            }
-          });
-        }).bind(this)
+        pressedCallback: (this.changeScene).bind(this, "ABOUT")
       });
 
       this.children.push(this.playButton);
@@ -137,6 +132,16 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
       if (this.started) {
         requestAnimationFrame(this.step.bind(this), null);
       }
+    },
+
+    changeScene: function(sceneName) {
+      this.game.changeScene({
+        sceneName: sceneName,
+        arcsData: {
+          arcs1VertOffset: this.arcs.arcs1VertOffset,
+          arcs2VertOffset: this.arcs.arcs2VertOffset
+        }
+      });
     },
 
     start: function() {

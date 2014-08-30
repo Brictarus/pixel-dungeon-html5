@@ -1,5 +1,5 @@
-define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene', 'scenes/about-scene', 'util/logger'],
-    function(Observer, DomHelper, AssetLoader, TitleScene, AboutScene, Logger) {
+define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene', 'scenes/about-scene', 'scenes/rankings-scene', 'util/logger'],
+    function(Observer, DomHelper, AssetLoader, TitleScene, AboutScene, RankingsScene, Logger) {
 
   var Game = Observer.extend({
     logger : Logger.getLogger('Loader', Logger.Levels.INFO),
@@ -10,28 +10,31 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.currentScene = null;
       this.createCanvases();
       this.attachMouseEvents();
-      /*this.changeScene({ sceneName: "TITLE"});*/
-      this.changeScene({ sceneName: "ABOUT"});
+      this.changeScene({ sceneName: "TITLE"});
+      /*this.changeScene({ sceneName: "ABOUT"});*/
     },
 
     attachMouseEvents: function () {
-      this.$root.addEventListener("mousedown", (function(mouseEvent) {
-        var x = mouseEvent.pageX - this.$root.offsetLeft,
-            y = mouseEvent.pageY - this.$root.offsetTop;
-        //this.logger.debug("x = ", x, "y = ", y, mouseEvent);
-        if (this.currentScene != null) {
-          this.currentScene.onMouseDown(x, y, mouseEvent);
-        }
-      }).bind(this));
+      this.$root.addEventListener("mousedown", (this.onMouseDown).bind(this));
+      window.addEventListener("mouseup", (this.onMouseUp).bind(this));
+    },
 
-      window.addEventListener("mouseup", (function(mouseEvent) {
-        var x = mouseEvent.pageX - this.$root.offsetLeft,
-            y = mouseEvent.pageY - this.$root.offsetTop;
-        this.logger.debug("x = ", x, "y = ", y, mouseEvent);
-        if (this.currentScene != null) {
-          this.currentScene.onMouseUp(x, y, mouseEvent);
-        }
-      }).bind(this));
+    onMouseDown: function(mouseEvent) {
+      var x = mouseEvent.pageX - this.$root.offsetLeft,
+          y = mouseEvent.pageY - this.$root.offsetTop;
+      this.logger.debug("x = ", x, "y = ", y, mouseEvent);
+      if (this.currentScene != null) {
+        this.currentScene.onMouseDown(x, y, mouseEvent);
+      }
+    },
+
+    onMouseUp: function(mouseEvent) {
+      var x = mouseEvent.pageX - this.$root.offsetLeft,
+          y = mouseEvent.pageY - this.$root.offsetTop;
+      this.logger.debug("x = ", x, "y = ", y, mouseEvent);
+      if (this.currentScene != null) {
+        this.currentScene.onMouseUp(x, y, mouseEvent);
+      }
     },
 
     createCanvases: function() {
@@ -86,6 +89,9 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
           break;
         case "ABOUT":
           this.currentScene = new AboutScene(sceneOptions)
+          break;
+        case "RANKINGS":
+          this.currentScene = new RankingsScene(sceneOptions)
           break;
         default:
           this.currentScene = null;

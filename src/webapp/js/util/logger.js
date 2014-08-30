@@ -20,28 +20,28 @@ define(['util/class'], function(Class) {
 
     debug : function() {
       if (this.level <= Logger.Levels.DEBUG) {
-        [].unshift.apply(arguments,['[DEBUG]', Logger.getDate(), '-']);
+        [].unshift.apply(arguments,['%c[DEBUG]', 'background:#964141;color:#FFF', Logger.getDate(), '-']);
         this.logFunction.apply(window.console, arguments);
       }
     },
 
     info : function() {
       if (this.level <= Logger.Levels.INFO) {
-        [].unshift.apply(arguments,['[INFO ]', Logger.getDate(), '-']);
+        [].unshift.apply(arguments,['%c[INFO ]', 'background:#157D11;color:#FFF', Logger.getDate(), '-']);
         this.logFunction.apply(window.console, arguments);
       }
     },
 
     warn : function() {
       if (this.level <= Logger.Levels.WARN) {
-        [].unshift.apply(arguments,['[WARN ]', Logger.getDate(), '-']);
+        [].unshift.apply(arguments,['%c[WARN ]', 'background:#FF6600;color:#FFF', Logger.getDate(), '-']);
         this.logFunction.apply(window.console, arguments);
       }
     },
 
     error : function() {
       if (this.level <= Logger.Levels.ERROR) {
-        [].unshift.apply(arguments,['[ERROR]', Logger.getDate(), '-']);
+        [].unshift.apply(arguments,['%c[ERROR]', 'background:#FF2B2B;color:#FFF', Logger.getDate(), '-']);
         this.logFunction.apply(window.console, arguments);
       }
     },
