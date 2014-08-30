@@ -47,7 +47,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
           w: 32 * this.zoom,
           h: 32 * this.zoom
         },
-        pressedCallback: (this.changeScene).bind(this, "HERO_SELECTION")
+        pressedCallback: (function() {
+          this.changeScene("HERO_SELECTION", {
+            arcsData: {
+              arcs1VertOffset: this.arcs.arcs1VertOffset,
+              arcs2VertOffset: this.arcs.arcs2VertOffset
+            }
+          });
+        }).bind(this)
       });
 
       this.rankingButton = new Button({
@@ -64,7 +71,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
           w: 32 * this.zoom,
           h: 32 * this.zoom
         },
-        pressedCallback: (this.changeScene).bind(this, "RANKINGS")
+        pressedCallback: (function() {
+          this.changeScene("RANKINGS", {
+            arcsData: {
+              arcs1VertOffset: this.arcs.arcs1VertOffset,
+              arcs2VertOffset: this.arcs.arcs2VertOffset
+            }
+          })
+        }).bind(this)
       });
 
       this.badgesButton = new Button({
@@ -81,7 +95,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
           w: 32 * this.zoom,
           h: 32 * this.zoom
         },
-        pressedCallback: (this.changeScene).bind(this, "RANKINGS")
+        pressedCallback: (function() {
+          this.changeScene("RANKINGS", {
+            arcsData: {
+              arcs1VertOffset: this.arcs.arcs1VertOffset,
+              arcs2VertOffset: this.arcs.arcs2VertOffset
+            }
+          })
+        }).bind(this)
       });
 
       this.aboutButton = new Button({
@@ -98,7 +119,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
           w: 32 * this.zoom,
           h: 32 * this.zoom
         },
-        pressedCallback: (this.changeScene).bind(this, "ABOUT")
+        pressedCallback: (function() {
+          this.changeScene("ABOUT", {
+            arcsData: {
+              arcs1VertOffset: this.arcs.arcs1VertOffset,
+              arcs2VertOffset: this.arcs.arcs2VertOffset
+            }
+          })
+        }).bind(this)
       });
 
       this.children.push(this.playButton);

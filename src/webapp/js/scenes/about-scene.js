@@ -41,8 +41,7 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
           h: (10 * this.zoom)
         },
         pressedCallback: (function() {
-          this.game.changeScene({
-            sceneName: "TITLE",
+          this.changeScene("TITLE", {
             arcsData: {
               arcs1VertOffset: this.arcs.arcs1VertOffset,
               arcs2VertOffset: this.arcs.arcs2VertOffset
