@@ -1,5 +1,6 @@
-define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene', 'scenes/about-scene', 'scenes/rankings-scene', 'util/logger'],
-    function(Observer, DomHelper, AssetLoader, TitleScene, AboutScene, RankingsScene, Logger) {
+define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene', 'scenes/about-scene',
+        'scenes/rankings-scene', 'scenes/game-scene', 'scenes/hero-selection-scene', 'util/logger'],
+    function(Observer, DomHelper, AssetLoader, TitleScene, AboutScene, RankingsScene, GameScene, HeroSelectionScene, Logger) {
 
   var Game = Observer.extend({
     logger : Logger.getLogger('Loader', Logger.Levels.INFO),
@@ -11,7 +12,6 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.createCanvases();
       this.attachMouseEvents();
       this.changeScene({ sceneName: "TITLE"});
-      /*this.changeScene({ sceneName: "ABOUT"});*/
     },
 
     attachMouseEvents: function () {
@@ -92,6 +92,12 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
           break;
         case "RANKINGS":
           this.currentScene = new RankingsScene(sceneOptions)
+          break;
+        case "GAME":
+          this.currentScene = new GameScene(sceneOptions)
+          break;
+        case "HERO_SELECTION":
+          this.currentScene = new HeroSelectionScene(sceneOptions)
           break;
         default:
           this.currentScene = null;

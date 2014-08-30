@@ -11,7 +11,6 @@ define(['gui/button'], function(Button) {
         window.open(this.url,'_blank');
       }).bind(this);
     },
-
     draw: function(context) {
       context.save();
 

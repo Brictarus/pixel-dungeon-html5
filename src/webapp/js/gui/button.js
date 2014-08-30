@@ -12,12 +12,11 @@ define(['util/observer', 'util/logger'], function(Observer, Logger) {
 
     init: function(options) {
 
-      this.imgAlpha = this.targetImgAlpha = 1.0;
+      this.imgAlpha = this.targetImgAlpha = options.alpha ||  1.0;
       this.textColorR = this.targetTextColorR = this.defaultTextColor.R;
       this.textColorG = this.targetTextColorG = this.defaultTextColor.G;
       this.textColorB = this.targetTextColorB = this.defaultTextColor.B;
       this.textColorA = this.targetTextColorA = this.defaultTextColor.A;
-      this.imgAlpha = this.targetImgAlpha = 1.0;
       this.text = options.text;
       this.hideText = options.hideText || false;
       this.img = options.img;

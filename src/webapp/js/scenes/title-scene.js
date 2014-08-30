@@ -46,7 +46,7 @@ define(['util/observer', 'asset-loader', 'gui/button', 'scenes/arcs'], function(
           w: 32 * this.zoom,
           h: 32 * this.zoom
         },
-        pressedCallback: (this.changeScene).bind(this, "RANKINGS")
+        pressedCallback: (this.changeScene).bind(this, "HERO_SELECTION")
       });
 
       this.rankingButton = new Button({
