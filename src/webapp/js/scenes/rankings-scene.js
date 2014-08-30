@@ -31,7 +31,7 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
         hideText: true,
         img: {
           data: iconsImg,
-          sx: 1, sy: 46, w: 11, h: 11
+          sx: 98, sy: 0, w: 16, h: 14
         },
         position: {
           x: canvasW - (10 * this.zoom) - 10,
@@ -51,7 +51,6 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
           });
         }).bind(this)
       });
-
 
       this.children.push(this.backButton);
 
