@@ -129,7 +129,8 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
               h: (10 * this.zoom)
             },
             pressedCallback: (function () {
-              this.changeScene("TITLE", {
+              this.game.changeScene({
+                sceneName: "TITLE",
                 arcsData: {
                   arcs1VertOffset: this.arcs.arcs1VertOffset,
                   arcs2VertOffset: this.arcs.arcs2VertOffset
