@@ -1,5 +1,5 @@
-define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'scenes/arcs'],
-    function (Observer, AssetLoader, Button, RadioButton, Arcs) {
+define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'gui/simple-button', 'scenes/arcs'],
+    function (Observer, AssetLoader, Button, RadioButton,SimpleButton, Arcs) {
     var TitleScene = Observer.extend({
         init: function (options) {
             this.game = options.game;
@@ -167,6 +167,23 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
 
             this.children.push(this.backButton);
 
+            this.newGameButton = new SimpleButton({
+              alpha:0.2,
+              hideText: false,
+              text:'New game',
+              position: {
+                x: 50,
+                y: (2*canvasH / 3) + 100
+              },
+              size: {
+                w: canvasW - 100,
+                h: 24
+              },
+              pressedCallback: (function() {
+                console.info('New game not implemented yet');
+              }).bind(this)
+            });
+
             // défilement du background (arcs1 et arcs2)
             this.arcs = new Arcs({
                 arcs1Asset: this.aLoader.spriteData('arcs1'),
@@ -269,6 +286,9 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                     if (res === true) return this.children[i];
                 }
             }
+            if(this.newGameButton.hitTest(x, y) === true){
+              return this.newGameButton;
+            }
             return null;
         },
 
@@ -291,10 +311,9 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'sce
                 element.draw(this.context);
             }).bind(this));
 
-            /*this.context.textAlign = "right";
-             this.context.fillStyle = "white";
-             this.context.font = "10px Verdana";
-             this.context.fillText("v. " +this.game.config.version, canvasW, canvasH - 2);*/
+            if(this.selectedHero){
+              this.newGameButton.draw(this.context);
+            }
             this.context.restore();
         }
 
