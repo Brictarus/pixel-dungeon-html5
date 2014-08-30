@@ -1,6 +1,6 @@
-define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'gui/simple-button', 'scenes/arcs'],
-    function (Observer, AssetLoader, Button, RadioButton,SimpleButton, Arcs) {
-    var TitleScene = Observer.extend({
+define(['scenes/base-scene', 'asset-loader', 'gui/button',  'gui/radio-button', 'gui/simple-button', 'scenes/arcs'],
+    function (BaseScene, AssetLoader, Button, RadioButton,SimpleButton, Arcs) {
+    var HeroSelectionScene = BaseScene.extend({
         init: function (options) {
             this.game = options.game;
             this.zoom = options.zoom;
@@ -200,27 +200,7 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'gui
 
         onResourcesLoaded: function () {
             this.initScene();
-
             this.start();
-        },
-
-        step: function () {
-            this.context.clearRect(0, 0, this.width, this.height);
-            this.update();
-            this.draw();
-            if (this.started) {
-                requestAnimationFrame(this.step.bind(this), null);
-            }
-        },
-
-        changeScene: function (sceneName) {
-            this.game.changeScene({
-                sceneName: sceneName,
-                arcsData: {
-                    arcs1VertOffset: this.arcs.arcs1VertOffset,
-                    arcs2VertOffset: this.arcs.arcs2VertOffset
-                }
-            });
         },
 
         selectHero: function(heroButton){
@@ -236,68 +216,31 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'gui
             this.selectedHero = heroButton;
         },
 
-        start: function () {
-            this.started = true;
-            this.step();
-        },
-
-        stop: function () {
-            this.started = false;
-        },
-
         update: function () {
+            this._super();
+
             // background scrolling
             this.arcs.update();
-
-            this.children.forEach((function (element) {
-                element.update && element.update();
-            }).bind(this));
         },
 
-        onMouseDown: function (x, y, mouseEvent) {
-            var hit = this.hitTest(x, y);
-            if (hit && hit.onMouseDown) {
-                this.mouseDownEvent = mouseEvent;
-                mouseEvent.hit = hit;
-                hit.onMouseDown(x, y, mouseEvent);
-            }
-        },
-
-        onMouseUp: function (x, y, mouseEvent) {
-            var hit = this.hitTest(x, y);
-            this.children.forEach((function (el) {
-                if (el.onMouseUp) {
-                    el.onMouseUp(x, y, mouseEvent);
-                }
-            }).bind(this));
-            if (hit) {
-                // check if mouse down target equals the one of mouse up
-                if (this.mouseDownEvent && this.mouseDownEvent.hit == hit && hit.press) {
-                    hit.press();
-                }
-            }
-            this.mouseDownEvent = null;
-        },
-
-        hitTest: function (x, y) {
-            for (var i = this.children.length - 1; i >= 0; i--) {
-                if (this.children[i].hitTest) {
-                    var res = this.children[i].hitTest(x, y);
-                    if (res === true) return this.children[i];
-                }
-            }
-            if(this.newGameButton.hitTest(x, y) === true){
-              return this.newGameButton;
-            }
-            return null;
-        },
+       
+      hitTest: function (x, y) {
+        for (var i = this.children.length - 1; i >= 0; i--) {
+          if (this.children[i].hitTest) {
+            var res = this.children[i].hitTest(x, y);
+            if (res === true) return this.children[i];
+          }
+        }
+        if(this.newGameButton.hitTest(x, y) === true){
+          return this.newGameButton;
+        }
+        return null;
+      },
 
         draw: function () {
             var canvasW = this.width,
                 canvasH = this.height,
                 zoom = this.zoom;
-
-            this.context.save();
 
             this.arcs.draw(this.context);
 
@@ -311,13 +254,12 @@ define(['util/observer', 'asset-loader', 'gui/button',  'gui/radio-button', 'gui
                 element.draw(this.context);
             }).bind(this));
 
-            if(this.selectedHero){
-              this.newGameButton.draw(this.context);
-            }
-            this.context.restore();
+          if(this.selectedHero){
+            this.newGameButton.draw(this.context);
+          }
         }
 
     });
 
-    return TitleScene;
+    return HeroSelectionScene;
 })
