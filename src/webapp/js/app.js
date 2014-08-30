@@ -10,7 +10,8 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.currentScene = null;
       this.createCanvases();
       this.attachMouseEvents();
-      this.changeScene({ sceneName: "TITLE"});
+      /*this.changeScene({ sceneName: "TITLE"});*/
+      this.changeScene({ sceneName: "ABOUT"});
     },
 
     attachMouseEvents: function () {
