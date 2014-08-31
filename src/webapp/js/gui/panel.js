@@ -152,12 +152,18 @@ define(['util/class'], function (Class) {
     },
 
     wrapText: function (context, text, x, y, maxWidth, lineHeight) {
+      text = text.replace('\n', ' \n ');
       var words = text.split(' ');
       var line = '';
       context.font = '16pt Calibri';
       context.fillStyle = '#FFF';
       for (var n = 0; n < words.length; n++) {
+        if(words[n] === '\n'){
+          y += lineHeight;
+          continue;
+        }
         var testLine = line + words[n] + ' ';
+
         var metrics = context.measureText(testLine);
         var testWidth = metrics.width;
         if (testWidth > maxWidth && n > 0) {

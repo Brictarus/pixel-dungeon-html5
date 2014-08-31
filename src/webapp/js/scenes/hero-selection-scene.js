@@ -1,5 +1,7 @@
-define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', 'gui/simple-button', 'gui/panel', 'scenes/arcs'],
-  function (BaseScene, AssetLoader, Button, RadioButton, SimpleButton, Panel, Arcs) {
+define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', 'gui/simple-button', 'gui/panel',
+    'scenes/arcs', 'models/warrior', 'models/mage', 'models/rogue', 'models/huntress'],
+  function (BaseScene, AssetLoader, Button, RadioButton, SimpleButton, Panel, Arcs,
+    Warrior, Mage, Rogue, Huntress) {
     var HeroSelectionScene = BaseScene.extend({
       init: function (options) {
         this.game = options.game;
@@ -258,7 +260,7 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
         if (this.selectedHero) {
           if (this.selectedHero == heroButton) {
             this.showHeroDescription = true;
-            this.heroDescriptionPanel.setText("bouh1 bouh2 bouh3 bouh4 bouh5 bouh6 bouh7 bouh8 bouh9");
+            this.heroDescriptionPanel.setText(this.getHeroDescription(heroButton.text));
             return;
           }
           this.showHeroDescription = false;
@@ -266,6 +268,20 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
         }
         heroButton.select();
         this.selectedHero = heroButton;
+      },
+
+      getHeroDescription: function(type){
+        switch(type){
+          case 'WARRIOR':
+            return Warrior.description;
+          case 'MAGE':
+            return Mage.description;
+          case 'ROGUE':
+            return Rogue.description;
+          case 'HUNTRESS':
+            return Huntress.description;
+          default: return '';
+        }
       },
 
       update: function () {
