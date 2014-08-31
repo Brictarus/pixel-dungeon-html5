@@ -157,6 +157,13 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button',  'gui/radio-button', 
                    console.info('Challenges not implemented yet');
               }).bind(this)
             });
+						
+						this.herosToButtons = {
+							WARRIOR: this.warriorButton,
+							MAGE: this.mageButton,
+							ROGUE: this.rogueButton,
+							HUNTRESS: this.huntressButton
+						}
 
             this.children.push(this.warriorButton);
             this.children.push(this.mageButton);
@@ -196,6 +203,8 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button',  'gui/radio-button', 
                 },
                 zoom: this.zoom
             });
+						
+						this.selectDefaultHero();
         },
 
         onResourcesLoaded: function () {
@@ -222,6 +231,12 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button',  'gui/radio-button', 
             // background scrolling
             this.arcs.update();
         },
+				
+				selectDefaultHero: function() {
+					var className = localStorage.getItem('LAST_CLASS') || "WARRIOR";
+					var button = this.herosToButtons[className];
+					this.selectHero(button);
+				},
 
        
       hitTest: function (x, y) {
