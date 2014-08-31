@@ -1,6 +1,6 @@
-define(['util/class'], function(Class) {
+define(['util/class'], function (Class) {
   return Class.extend({
-    init: function(options) {
+    init: function (options) {
       this.pos = options.pos;
       this.size = options.size;
       this.images = options.images;
@@ -11,11 +11,13 @@ define(['util/class'], function(Class) {
       this.children = [];
     },
 
-    update: function() {
-      this.children.forEach((function(child) { child.update && child.update(); }).bind(this));
+    update: function () {
+      this.children.forEach((function (child) {
+        child.update && child.update();
+      }).bind(this));
     },
 
-    prepareContainer: function() {
+    prepareContainer: function () {
       if (this.images) {
         var ctl = this.images.cornerTopLeft;
         var ctr = this.images.cornerTopRight;
@@ -81,12 +83,12 @@ define(['util/class'], function(Class) {
         w: this.size.w - 2 * this.padding * this.zoom,
         h: this.size.h - 2 * this.padding * this.zoom
       }
-			this.contentOffset = {
-				x: 0, y: 0
-			}
+      this.contentOffset = {
+        x: 0, y: 0
+      }
     },
 
-    draw: function(context) {
+    draw: function (context) {
       context.save();
 
       if (this.images) {
@@ -123,22 +125,51 @@ define(['util/class'], function(Class) {
         context.globalAlpha = 1.0;
       }
 
-			context.beginPath();
-			context.rect(this.contentPos.x, this.contentPos.y, this.contentSize.w, this.contentSize.h);
+      context.beginPath();
+      context.rect(this.contentPos.x, this.contentPos.y, this.contentSize.w, this.contentSize.h);
       context.clip();
 
-      this.children.forEach((function(child) {
+      this.children.forEach((function (child) {
         if (child.draw && child.pos && this.isChildVisible(child)) {
           child.draw(context);
         }
-      }).bind(this))
+      }).bind(this));
+
+      if (this.text) {
+        this.wrapText(context, this.text, ctl.x + 16, ctl.y + 34, this.contentSize.w - 6, 20);
+      }
 
       context.restore();
     },
-		
-		isChildVisible: function(child) {
-			return (child.pos && child.size && (child.pos.y < this.contentPos.y + this.contentSize.h + this.contentOffset.y) && 
-				(child.pos.y + child.size.h > this.contentPos.y + this.contentOffset.y))
-		}
+
+    isChildVisible: function (child) {
+      return (child.pos && child.size && (child.pos.y < this.contentPos.y + this.contentSize.h + this.contentOffset.y) &&
+        (child.pos.y + child.size.h > this.contentPos.y + this.contentOffset.y))
+    },
+
+    setText: function (text) {
+      this.text = text;
+    },
+
+    wrapText: function (context, text, x, y, maxWidth, lineHeight) {
+      var words = text.split(' ');
+      var line = '';
+      context.font = '16pt Calibri';
+      context.fillStyle = '#FFF';
+      for (var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = context.measureText(testLine);
+        var testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+          context.fillText(line, x, y);
+          line = words[n] + ' ';
+          y += lineHeight;
+        }
+        else {
+          line = testLine;
+        }
+      }
+      context.fillText(line, x, y);
+    }
   });
 });
