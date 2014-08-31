@@ -25,12 +25,14 @@ define(['util/logger', 'util/observer'],
     },
 
     step: function() {
-      this.clearContext();
+      window.stats && window.stats.begin();
+			this.clearContext();
       this.update();
       this._draw();
       if (this.started) {
         requestAnimationFrame(this.step.bind(this), null);
       }
+			window.stats && window.stats.end();
     },
 
     clearContext: function() {

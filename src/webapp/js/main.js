@@ -1,8 +1,14 @@
-require(['app', 'config'], function (App, Config) {
+require(['app', 'config', 'lib/stats'], function (App, Config, Stats) {
   var app = new App({
     $root: document.getElementById("game"),
     config: Config
   });
+	
+	window.stats = new Stats();
+	stats.setMode( 1 );
+	document.body.appendChild( stats.domElement );
+	stats.domElement.style.position = "absolute";
+	stats.domElement.style.top = "0";
 
   var initBadgesTest = function () {
     var badgesKey = "badges";
