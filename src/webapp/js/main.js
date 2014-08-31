@@ -5,7 +5,7 @@ require(['app', 'config', 'lib/stats'], function (App, Config, Stats) {
   });
 	
 	window.stats = new Stats();
-	stats.setMode( 1 );
+	stats.setMode(0);
 	document.body.appendChild( stats.domElement );
 	stats.domElement.style.position = "absolute";
 	stats.domElement.style.top = "0";

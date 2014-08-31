@@ -13,7 +13,7 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.createCanvases();
       this.attachMouseEvents();
       this.changeScene({ sceneName: "TITLE"});
-      /*this.changeScene({ sceneName: "BADGES"});*/
+      /*this.changeScene({ sceneName: "RANKINGS"});*/
       this.start();
     },
 

@@ -115,12 +115,6 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/b
     draw: function() {
       this.arcs.draw(this.context);
 
-      var xOffsetText = 20;
-      this.context.textBaseline = "top";
-      this.context.font = "12px Verdana";
-      this.context.fillStyle = "white";
-      this.context.fillText("TODO", xOffsetText, 60);
-
       this.context.font = "16px Verdana";
       this.context.fillStyle = "yellow";
       this.context.strokeStyle = "black";
