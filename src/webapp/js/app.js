@@ -12,7 +12,7 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.createCanvases();
       this.attachMouseEvents();
       this.changeScene({ sceneName: "TITLE"});
-      /*this.changeScene({ sceneName: "RANKINGS"});*/
+      /*this.changeScene({ sceneName: "BADGES"});*/
     },
 
     attachMouseEvents: function () {
@@ -106,9 +106,6 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
         default:
           this.currentScene = null;
       }
-      /*if (this.currentScene) {
-        this.currentScene.on("change-scene", this.changeScene.bind(this));
-      }*/
     }
   });
 

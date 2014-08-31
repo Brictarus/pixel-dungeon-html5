@@ -81,6 +81,9 @@ define(['util/class'], function(Class) {
         w: this.size.w - 2 * this.padding * this.zoom,
         h: this.size.h - 2 * this.padding * this.zoom
       }
+			this.contentOffset = {
+				x: 0, y: 0
+			}
     },
 
     draw: function(context) {
@@ -120,19 +123,22 @@ define(['util/class'], function(Class) {
         context.globalAlpha = 1.0;
       }
 
-      // really slow down the rendering
-      /*context.restore();
-      context.save();
-      context.rect(this.contentPos.x, this.contentPos.y, this.contentSize.w, this.contentSize.h);
-      context.clip();*/
+			context.beginPath();
+			context.rect(this.contentPos.x, this.contentPos.y, this.contentSize.w, this.contentSize.h);
+      context.clip();
 
       this.children.forEach((function(child) {
-        if (child.draw && child.pos && child.pos.y < this.contentPos.y + this.contentSize.h) {
+        if (child.draw && child.pos && this.isChildVisible(child)) {
           child.draw(context);
         }
       }).bind(this))
 
       context.restore();
-    }
+    },
+		
+		isChildVisible: function(child) {
+			return (child.pos && child.size && (child.pos.y < this.contentPos.y + this.contentSize.h + this.contentOffset.y) && 
+				(child.pos.y + child.size.h > this.contentPos.y + this.contentOffset.y))
+		}
   });
 });

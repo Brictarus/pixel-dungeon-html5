@@ -36,7 +36,11 @@ define(['gui/panel', 'gui/badge', 'util/logger'], function (Panel, Badge, Logger
               zoom: this.zoom,
               pos: {
                 x: this.contentPos.x + 3, y: currItemHeight + this.contentPos.y
-              }
+              },
+							size: {
+								w: this.contentSize.w,
+								h: itemHeight
+							}
             }));
             currItemHeight += itemHeight;
           }
