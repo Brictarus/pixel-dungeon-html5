@@ -9,10 +9,12 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.config = options.config;
       this.$root = options.$root;
       this.currentScene = null;
+      this.started = false;
       this.createCanvases();
       this.attachMouseEvents();
       this.changeScene({ sceneName: "TITLE"});
       /*this.changeScene({ sceneName: "BADGES"});*/
+      this.start();
     },
 
     attachMouseEvents: function () {
@@ -65,9 +67,31 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
       this.context = $canvas.getContext("2d");
     },
 
+    start: function() {
+      this.started = true;
+      this.step();
+    },
+
+    stop: function() {
+      this.started = false;
+    },
+
+    step: function() {
+      window.stats && window.stats.begin();
+      if (this.currentScene) {
+        this.currentScene.clearContext();
+        this.currentScene._update();
+        this.currentScene._draw();
+      }
+      if (this.started) {
+        requestAnimationFrame(this.step.bind(this), null);
+      }
+      window.stats && window.stats.end();
+    },
+
     changeScene: function (data) {
       if (this.currentScene) {
-        this.currentScene.stop();
+        this.currentScene.clear && this.currentScene.clear();
       }
       this.state = data.sceneName;
 

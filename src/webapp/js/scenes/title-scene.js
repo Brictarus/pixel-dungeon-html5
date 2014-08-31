@@ -25,7 +25,7 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
 
     onResourcesLoaded: function() {
       this.initScene();
-      this.start();
+      this.ready = true;
     },
 
     initScene: function() {
@@ -149,8 +149,6 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
     },
 
     update: function() {
-      this._super();
-
       // background scrolling
       this.arcs.update();
     },

@@ -250,7 +250,7 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
 
       onResourcesLoaded: function () {
         this.initScene();
-        this.start();
+            this.ready = true;
       },
 
       selectHero: function (heroButton) {
@@ -269,8 +269,7 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
       },
 
       update: function () {
-        this._super();
-
+            this._super();
         // background scrolling
         this.arcs.update();
       },

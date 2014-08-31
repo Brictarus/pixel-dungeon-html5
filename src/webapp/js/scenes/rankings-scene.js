@@ -70,12 +70,10 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
 
     onResourcesLoaded: function() {
       this.initScene();
-      this.start();
+      this.ready = true;
     },
 
     update: function() {
-      this._super();
-
       // background scrolling
       this.arcs.update();
     },
