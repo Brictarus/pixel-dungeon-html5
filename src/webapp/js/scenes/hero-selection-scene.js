@@ -269,7 +269,6 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
       },
 
       update: function () {
-            this._super();
         // background scrolling
         this.arcs.update();
       },
