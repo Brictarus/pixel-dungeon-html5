@@ -34,12 +34,12 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
           sx: 98, sy: 0, w: 16, h: 14
         },
         position: {
-          x: canvasW - (10 * this.zoom) - 10,
-          y: 10
+          x: canvasW - 10 * 1.5 * this.zoom - 2,
+          y: 2
         },
         size: {
-          w: (10 * this.zoom),
-          h: (10 * this.zoom)
+          w: 10 * 1.5 * this.zoom,
+          h: 10 * 1.5 * this.zoom
         },
         pressedCallback: (function() {
           this.game.changeScene({
@@ -81,12 +81,11 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
     draw: function() {
       this.arcs.draw(this.context);
 
-      this.context.font = "16px Verdana";
+      this.context.font = "18px Verdana";
       this.context.fillStyle = "yellow";
-      this.context.strokeStyle = "black";
       this.context.textBaseline = "top";
       this.context.textAlign = "center"
-      this.context.fillText("Top Rankings", this.width / 2, 12);
+      this.context.fillText("Top Rankings", this.width / 2, 50);
 
       // draw buttons
       this.children.forEach((function(element) {

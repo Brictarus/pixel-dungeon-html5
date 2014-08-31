@@ -36,7 +36,8 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
         var canvasW = this.width;
 
         // boutons
-        var xOffset = ((canvasW / 2) - 24) / 2;
+        var avatarZoom = 1.8;
+        var xOffset = ((canvasW / 2) - 24 * avatarZoom) / 2;
         var avatarsImg = this.aLoader.spriteData('avatars').image;
         this.warriorButton = new RadioButton({
           scene: this,
@@ -50,8 +51,8 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
             y: (canvasH / 3) + (avatarsImg.height / 2) - 50
           },
           size: {
-            w: 24 * this.zoom,
-            h: 32 * this.zoom
+            w: 24 * this.zoom * avatarZoom,
+            h: 32 * this.zoom * avatarZoom
           },
           alpha: 0.2,
           pressedCallback: function () {
@@ -67,12 +68,12 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
             sx: 24, sy: 0, w: 24, h: 32
           },
           position: {
-            x: xOffset + (canvasW / 2),
+            x: xOffset * 3.1,
             y: (canvasH / 3) + (avatarsImg.height / 2) - 50
           },
           size: {
-            w: 24 * this.zoom,
-            h: 32 * this.zoom
+            w: 24 * this.zoom * avatarZoom,
+            h: 32 * this.zoom * avatarZoom
           },
           alpha: 0.2,
           pressedCallback: function () {
@@ -89,11 +90,11 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
           },
           position: {
             x: xOffset,
-            y: (canvasH / 3) + (avatarsImg.height / 2) + 70
+            y: (canvasH / 3) + (avatarsImg.height / 2) + 100
           },
           size: {
-            w: 24 * this.zoom,
-            h: 32 * this.zoom
+            w: 24 * this.zoom * avatarZoom,
+            h: 32 * this.zoom * avatarZoom
           },
           alpha: 0.2,
           pressedCallback: function () {
@@ -109,12 +110,12 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
             sx: 72, sy: 0, w: 24, h: 32
           },
           position: {
-            x: xOffset + (canvasW / 2),
-            y: (canvasH / 3) + (avatarsImg.height / 2) + 70
+            x: xOffset * 3.1,
+            y: (canvasH / 3) + (avatarsImg.height / 2) + 100
           },
           size: {
-            w: 24 * this.zoom,
-            h: 32 * this.zoom
+            w: 24 * this.zoom * avatarZoom,
+            h: 32 * this.zoom * avatarZoom
           },
           alpha: 0.2,
           pressedCallback: function () {
@@ -131,12 +132,12 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
             sx: 98, sy: 0, w: 16, h: 14
           },
           position: {
-            x: canvasW - (10 * this.zoom) - 10,
-            y: 10
+            x: canvasW - 10 * 1.5 * this.zoom - 2,
+            y: 2
           },
           size: {
-            w: (10 * this.zoom),
-            h: (10 * this.zoom)
+            w: 10 * 1.5 * this.zoom,
+            h: 10 * 1.5 * this.zoom
           },
           pressedCallback: (function () {
             if(this.showHeroDescription){
@@ -161,11 +162,11 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
           },
           position: {
             x: canvasW / 2 - 12,
-            y: (canvasH / 3) + (avatarsImg.height / 2) + 70 - 24
+            y: (canvasH / 3) + (avatarsImg.height / 2) + 100 - 24
           },
           size: {
             w: (18 * this.zoom),
-            h: (18 * this.zoom)
+            h: (18 * this.zoom) + 3
           },
           pressedCallback: (function () {
             console.info('Challenges not implemented yet');
@@ -194,7 +195,7 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
           text: 'New game',
           position: {
             x: 50,
-            y: (2 * canvasH / 3) + 100
+            y: canvasH - 24
           },
           size: {
             w: canvasW - 100,

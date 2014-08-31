@@ -5,10 +5,10 @@ define(['util/logger', 'util/observer'],
 
     init: function(options) {
       this.game = options.game;
-      this.zoom = options.zoom;
       this.height = options.height;
       this.width = options.width;
       this.context = options.context;
+      this.zoom = options.zoom;
 
       this.mouseDownEvent = null;
       this.children = [];

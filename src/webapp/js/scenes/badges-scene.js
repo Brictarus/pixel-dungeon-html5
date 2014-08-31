@@ -36,12 +36,12 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/b
           sx: 98, sy: 0, w: 16, h: 14
         },
         position: {
-          x: canvasW - (10 * this.zoom) - 10,
-          y: 10
+          x: canvasW - 10 * 1.5 * this.zoom - 2,
+          y: 2
         },
         size: {
-          w: (10 * this.zoom),
-          h: (10 * this.zoom)
+          w: (10 * this.zoom * 1.5),
+          h: (10 * this.zoom * 1.5)
         },
         pressedCallback: (function() {
           this.game.changeScene({
@@ -55,7 +55,7 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/b
       });
 
       this.panel = new BadgesPanel({
-        pos: { x: 20, y: 50 }, size: { w: this.width - 20 * 2, h: this.height - 50 - 15 },
+        pos: { x: 20, y: 40 }, size: { w: this.width - 20 * 2, h: this.height - 40 - 15 },
         badgesConfig: this.game.config.assetConfig.badges,
         zoom: this.zoom,
         padding: 6,
@@ -115,12 +115,12 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/b
     draw: function() {
       this.arcs.draw(this.context);
 
-      this.context.font = "16px Verdana";
+      this.context.font = "18px Verdana";
       this.context.fillStyle = "yellow";
       this.context.strokeStyle = "black";
       this.context.textBaseline = "top";
       this.context.textAlign = "center"
-      this.context.fillText("Your Badges", this.width / 2, 12);
+      this.context.fillText("Your Badges", this.width / 2, 8);
 
       // draw buttons
       this.children.forEach((function(element) {

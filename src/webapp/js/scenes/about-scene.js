@@ -33,12 +33,12 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
           sx: 98, sy: 0, w: 16, h: 14
         },
         position: {
-          x: canvasW - (10 * this.zoom) - 10,
-          y: 10
+          x: canvasW - 10 * 1.5 * this.zoom - 2,
+          y: 2
         },
         size: {
-          w: (10 * this.zoom),
-          h: (10 * this.zoom)
+          w: 10 * 1.5 * this.zoom,
+          h: 10 * 1.5 * this.zoom
         },
         pressedCallback: (function() {
           this.changeScene("TITLE", {
@@ -52,10 +52,11 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
       var gitLinkUrl = "https://github.com/Brictarus/pixel-dungeon";
       this.gitLink = new Hyperlink({
         text: gitLinkUrl,
+        fontSize: 12,
         url: gitLinkUrl,
         position: {
-          x: 20,
-          y: 140
+          x: this.width / 2,
+          y: 290
         },
         size: {
           w: (10 * this.zoom),
@@ -95,13 +96,20 @@ define(['util/logger', 'scenes/base-scene', 'asset-loader', 'gui/button', 'gui/h
     draw: function() {
       this.arcs.draw(this.context);
 
-      var xOffsetText = 20;
+      var xOffsetText = this.width / 2;
+      var yStart = 100;
+
       this.context.textBaseline = "top";
       this.context.font = "12px Verdana";
       this.context.fillStyle = "white";
-      this.context.fillText("Adapted in HTML5: Brictarus", xOffsetText, 60);
-      this.context.fillText("From original Android game Pixel Dungeon", xOffsetText, 80);
-      this.context.fillText("The code is on GitHub:", xOffsetText, 120);
+      var lineHeight = 24;
+      this.context.textAlign = "center"
+      this.context.fillText("Adapted in HTML5 by:", xOffsetText, yStart);
+      this.context.fillText("Brictarus", xOffsetText, yStart + lineHeight);
+      this.context.fillText("Jripault", xOffsetText, yStart + 2 * lineHeight);
+      this.context.fillText("From original Android game:", xOffsetText, yStart + 4 * lineHeight);
+      this.context.fillText("~ Pixel Dungeon ~", xOffsetText, yStart + 5 * lineHeight);
+      this.context.fillText("The code is on GitHub:", xOffsetText, yStart + 7 * lineHeight);
 
       // draw buttons
       this.children.forEach((function(element) {

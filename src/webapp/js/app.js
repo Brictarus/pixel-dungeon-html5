@@ -3,17 +3,19 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
     function(Observer, DomHelper, AssetLoader, TitleScene, AboutScene, BadgesScene, RankingsScene, GameScene, HeroSelectionScene, Logger) {
 
   var Game = Observer.extend({
-    logger : Logger.getLogger('Loader', Logger.Levels.INFO),
+    logger : Logger.getLogger('Loader', Logger.Levels.DEBUG),
 
     init: function(options) {
       this.config = options.config;
       this.$root = options.$root;
+      this.size = options.size;
       this.currentScene = null;
       this.started = false;
+      this.zoom = 2.0;
       this.createCanvases();
       this.attachMouseEvents();
       this.changeScene({ sceneName: "TITLE"});
-      /*this.changeScene({ sceneName: "RANKINGS"});*/
+      /*this.changeScene({ sceneName: "ABOUT"});*/
       this.start();
     },
 
@@ -23,8 +25,8 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
     },
 
     onMouseDown: function(mouseEvent) {
-      var x = mouseEvent.pageX - this.$root.offsetLeft,
-          y = mouseEvent.pageY - this.$root.offsetTop;
+      var x = (mouseEvent.pageX - this.$root.offsetLeft) / this.ratio,
+          y = (mouseEvent.pageY - this.$root.offsetTop) / this.ratio;
       this.logger.debug("x = ", x, "y = ", y, mouseEvent);
       if (this.currentScene != null) {
         this.currentScene.onMouseDown(x, y, mouseEvent);
@@ -32,8 +34,8 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
     },
 
     onMouseUp: function(mouseEvent) {
-      var x = mouseEvent.pageX - this.$root.offsetLeft,
-          y = mouseEvent.pageY - this.$root.offsetTop;
+      var x = (mouseEvent.pageX - this.$root.offsetLeft) / this.ratio,
+          y = (mouseEvent.pageY - this.$root.offsetTop) / this.ratio;
       this.logger.debug("x = ", x, "y = ", y, mouseEvent);
       if (this.currentScene != null) {
         this.currentScene.onMouseUp(x, y, mouseEvent);
@@ -47,20 +49,45 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
         $r.removeChild($r.firstChild);
       }
 
+      var layout = "VERTICAL";
       // append canvases
+      // w: 500 x h : 320
+      var verticalRatio = 0.64;
+      // w: 300 x h : 150
+      var horizontalRatio = 1/verticalRatio;
       var $canvas = document.createElement("canvas");
-      var rootPosY = Math.ceil(document.getElementById("game").getBoundingClientRect().top);
-      var rootStyle = getComputedStyle($r);
-      var borderTop = DomHelper.getWidthPropertyFromComputedStyle(rootStyle, 'border-top-width');
-      var borderBottom = DomHelper.getWidthPropertyFromComputedStyle(rootStyle, 'border-bottom-width');
-      var marginTop = DomHelper.getWidthPropertyFromComputedStyle(rootStyle, 'margin-top');
-      var marginBottom = DomHelper.getWidthPropertyFromComputedStyle(rootStyle, 'margin-bottom');
-      var paddingTop = DomHelper.getWidthPropertyFromComputedStyle(rootStyle, 'padding-top');
-      var paddingBottom = DomHelper.getWidthPropertyFromComputedStyle(rootStyle, 'padding-bottom');
-      var deltaSpaceContainer = (borderBottom + borderTop + marginBottom + marginTop + paddingBottom + paddingTop);
-      var canvasHeight = window.innerHeight - rootPosY - 5 - deltaSpaceContainer;
-      $canvas.height = canvasHeight;
-      $canvas.width = 300;
+      this.ratio = 0;
+      if (layout == "VERTICAL") {
+        $canvas.width = 160 * this.zoom;
+        $canvas.height = 250 * this.zoom;
+        var tempWidth = parseInt(verticalRatio * this.size.h);
+        if (tempWidth <= this.size.w) {
+          $canvas.style.width = tempWidth + "px";
+          $canvas.style.height = this.size.h + "px";
+          this.ratio = this.size.h / $canvas.height;
+        } else {
+          $canvas.style.width = Math.min(tempWidth, this.size.w) + "px";
+          this.ratio = this.size.w / $canvas.width;
+        }
+      } else {
+        $canvas.width = 250 * this.zoom;
+        $canvas.height = 160 * this.zoom;
+        var tempHeight = parseInt(verticalRatio * this.size.w);
+        if (tempHeight <= this.size.h) {
+          $canvas.style.width = this.size.w + "px";
+          $canvas.style.heigth = tempHeight + "px";
+          this.ratio = this.size.w / $canvas.width;
+        } else {
+          $canvas.style.height = Math.min(tempHeight, this.size.h) + "px";
+          $canvas.style.width = Math.min(tempHeight, this.size.h) * horizontalRatio + "px";
+          this.ratio = this.size.h / $canvas.height;
+        }
+      }
+      this.logger.debug('ratio =', this.ratio);
+      $r.style.width = $canvas.style.width;
+
+
+      // 300w * 550h
       $r.appendChild($canvas);
 
       this.$canvas = $canvas;
@@ -97,13 +124,12 @@ define(['util/observer', 'util/dom-helper', 'asset-loader', 'scenes/title-scene'
 
       var canvasW = this.$canvas.width,
           canvasH = this.$canvas.height;
-      var zoom = 2;
       var sceneOptions = {
         game: this,
-        zoom: zoom,
         height: canvasH,
         width: canvasW,
-        context: this.context
+        context: this.context,
+        zoom: this.zoom
       };
       if (data && data.arcsData) {
         sceneOptions.arcsData = data.arcsData;

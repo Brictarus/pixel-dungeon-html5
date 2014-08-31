@@ -4,7 +4,7 @@ define(['gui/button'], function(Button) {
       this._super(options);
       this.url = options.url;
       this.size.w = 0;
-      this.fontSize = 12;
+      this.fontSize = options.fontSize || 12;
       this.size.h = this.fontSize * 1.3;
       this.pressedCallback = (function() {
         options.pressedCallback();
@@ -17,8 +17,8 @@ define(['gui/button'], function(Button) {
       if (this.text && !this.hideText) {
         context.fillStyle = "rgb(105,122,219)";
         context.font = this.fontSize + "px Verdana";
-        context.textAlign = "left";
-        context.textBaseline = "top";
+        //context.textAlign = "left";
+        //context.textBaseline = "top";
         if (this.size.w === 0) {
           this.size.w = context.measureText(this.text).width;
         }

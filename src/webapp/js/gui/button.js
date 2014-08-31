@@ -18,6 +18,7 @@ define(['util/observer', 'util/logger'], function(Observer, Logger) {
       this.textColorB = this.targetTextColorB = this.defaultTextColor.B;
       this.textColorA = this.targetTextColorA = this.defaultTextColor.A;
       this.text = options.text;
+      this.fontSize = options.fontSize || 10;
       this.hideText = options.hideText || false;
       this.img = options.img;
       this.pos = options.position;
@@ -37,7 +38,7 @@ define(['util/observer', 'util/logger'], function(Observer, Logger) {
 
       if (this.text && !this.hideText) {
         context.fillStyle = "rgba(" + this.textColorR  + "," + this.textColorG  + ", " + this.textColorB  + ", " + this.textColorA + ")";
-        context.font = "16px Verdana";
+        context.font = this.fontSize + "px Verdana";
         context.textAlign = "center";
         context.fillText(this.text, this.pos.x + this.size.w / 2, this.pos.y + this.size.h + 16);
       }

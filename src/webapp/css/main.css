@@ -2,6 +2,7 @@ body {
     background-color: black;
     margin: 0px;
     padding: 0px;
+    /*overflow: hidden;*/
 }
 
 h1 {
@@ -10,14 +11,19 @@ h1 {
 }
 
 #app-wrapper {
-    width: 300px;
     margin: 0 auto;
     padding: 0px;
 }
 
 #game {
     background: black;
-    /*outline: 3px dotted green;*/
+    margin: 0px auto;
     outline: 1px solid grey;
-    margin: 20px auto;
+}
+#debug {
+    min-width: 20px;
+    min-height: 20px;
+    float: left;
+    margin-left: 400px;
+    background-color: red;
 }

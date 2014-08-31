@@ -35,13 +35,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
       var dashboardImg = this.aLoader.spriteData('dashboard').image;
       this.playButton = new Button({
         text: "Play",
+        fontSize: 14,
         img: {
           data: dashboardImg,
           sx: 0, sy: 0, w: 32, h: 32
         },
         position: {
-          x: 60,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 30
+          x: 70,
+          y: (canvasH / 3) + (dashboardImg.height) + 40
         },
         size: {
           w: 32 * this.zoom,
@@ -59,13 +60,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
 
       this.rankingButton = new Button({
         text: "Rankings",
+        fontSize: 14,
         img: {
           data: dashboardImg,
           sx: 64, sy: 0, w: 32, h: 32
         },
         position: {
-          x: 170,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 30
+          x: 190,
+          y: (canvasH / 3) + (dashboardImg.height) + 40
         },
         size: {
           w: 32 * this.zoom,
@@ -83,13 +85,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
 
       this.badgesButton = new Button({
         text: "Badges",
+        fontSize: 14,
         img: {
           data: dashboardImg,
           sx: 96, sy: 0, w: 32, h: 32
         },
         position: {
-          x: 60,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 150
+          x: 70,
+          y: (canvasH / 3) + (dashboardImg.height / 2) + 160
         },
         size: {
           w: 32 * this.zoom,
@@ -107,13 +110,14 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
 
       this.aboutButton = new Button({
         text: "About",
+        fontSize: 14,
         img: {
           data: dashboardImg,
           sx: 32, sy: 0, w: 32, h: 32
         },
         position: {
-          x: 170,
-          y: (canvasH / 3) + (dashboardImg.height / 2) + 150
+          x: 190,
+          y: (canvasH / 3) + (dashboardImg.height / 2) + 160
         },
         size: {
           w: 32 * this.zoom,
@@ -140,11 +144,11 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
         arcs2Asset: this.aLoader.spriteData('arcs2'),
         arcs1VertOffset: this.arcs1VertOffset,
         arcs2VertOffset: this.arcs2VertOffset,
+        zoom: this.zoom,
         size: {
           w: this.width,
           h: this.height
-        },
-        zoom: this.zoom
+        }
       });
     },
 
@@ -155,8 +159,7 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
 
     draw: function() {
       var canvasW = this.width,
-          canvasH = this.height,
-          zoom = this.zoom;
+          canvasH = this.height;
 
       var titleImg = this.aLoader.spriteData('banners').image;
 
@@ -164,7 +167,7 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
 
       // draw title
       this.context.drawImage(titleImg, 0, 0, titleImg.width, 68,
-          (canvasW / 2) - (titleImg.width / 2 * zoom), (canvasH / 3) - (titleImg.height / 2), titleImg.width * 2, 68 * zoom);
+          (canvasW / 2) - (titleImg.width * this.zoom / 2), canvasH / 4 - 50, titleImg.width * this.zoom, 68 * this.zoom);
 
       // draw buttons
       this.children.forEach((function(element) {
@@ -174,7 +177,7 @@ define(['scenes/base-scene', 'util/logger', 'asset-loader', 'gui/button', 'scene
       this.context.textAlign = "right";
       this.context.fillStyle = "white";
       this.context.font = "10px Verdana";
-      this.context.fillText("v. " +this.game.config.version, canvasW, canvasH - 2);
+      this.context.fillText("v. " + this.game.config.version, canvasW - 2, canvasH - 2);
     }
 	});
 	
