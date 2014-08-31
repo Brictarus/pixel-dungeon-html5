@@ -11,38 +11,21 @@ define(['util/logger', 'util/observer'],
       this.context = options.context;
 
       this.mouseDownEvent = null;
-      this.started = false;
       this.children = [];
+      this.ready = false;
 		},
-
-    start: function() {
-      this.started = true;
-      this.step();
-    },
-
-    stop: function() {
-      this.started = false;
-    },
-
-    step: function() {
-      window.stats && window.stats.begin();
-			this.clearContext();
-      this.update();
-      this._draw();
-      if (this.started) {
-        requestAnimationFrame(this.step.bind(this), null);
-      }
-			window.stats && window.stats.end();
-    },
 
     clearContext: function() {
       this.context.clearRect(0, 0, this.width, this.height);
     },
 
-    update: function() {
-      this.children.forEach((function(element) {
-        element.update && element.update();
-      }).bind(this));
+    _update: function() {
+      if (this.ready) {
+        this.update();
+        this.children.forEach((function(element) {
+          element.update && element.update();
+        }).bind(this));
+      }
     },
 
     onMouseDown: function(x, y, mouseEvent) {
@@ -87,9 +70,11 @@ define(['util/logger', 'util/observer'],
     },
 
     _draw: function() {
-      this.context.save();
-      this.draw();
-      this.context.restore();
+      if (this.ready) {
+        this.context.save();
+        this.draw();
+        this.context.restore();
+      }
     },
 
     draw: function() {
