@@ -202,7 +202,10 @@ define(['scenes/base-scene', 'asset-loader', 'gui/button', 'gui/radio-button', '
             h: 24
           },
           pressedCallback: (function () {
-            console.info('New game not implemented yet');
+            //console.info('New game not implemented yet');
+            this.game.changeScene({
+              sceneName: "GAME"
+            });
           }).bind(this)
         });
 
